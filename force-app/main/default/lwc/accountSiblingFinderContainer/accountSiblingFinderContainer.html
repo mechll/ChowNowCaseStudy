@@ -1,3 +1,22 @@
 <template>
-    
+    <lightning-card title="Record Form Account Details">
+            <lightning-layout>
+                <!-- Search Bar Markup -->
+                <lightning-layout-item>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="text-input-id-96">Search Sibling Accounts</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                              <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                            </svg>
+                            <input type="text" id="text-input-id-96" placeholder="Enter Account Id or Name" class="slds-input" />
+                        </div>
+                    </div>
+
+                    <button class="slds-button slds-button_neutral" onclick={handleGetSiblingAccounts}>Search</button>
+                </lightning-layout-item>
+            </lightning-layout>
+
+
+    </lightning-card>
 </template>
