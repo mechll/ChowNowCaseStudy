@@ -9,8 +9,7 @@
                               <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
                                     <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
                             </svg>
-                            <input type="text" name="FirstName" label="First Name"
-                                                                onchange={handleFormInputChange} 
+                            <input type="text" name="FirstName" onchange={handleFormInputChange} 
                                                                 placeholder="Enter Account Id or Name" 
                                                                 class="slds-input" 
                                                                 id="text-input-id-1"/>
@@ -20,6 +19,21 @@
                     <button class="slds-button slds-button_neutral" onclick={handleGetSiblingAccounts}>Search</button>
                 </lightning-layout-item>
             </lightning-layout>
+
+
+            <!-- Data Table -->
+            <div class="slds-m-around_medium">
+                <template if:true={data}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={data}
+                        columns={columns}>
+                    </lightning-datatable>
+                </template>
+                <template if:true={contacts.error}>
+                    <!-- handle Apex error -->
+                </template>
+            </div>
 
 
     </lightning-card>
