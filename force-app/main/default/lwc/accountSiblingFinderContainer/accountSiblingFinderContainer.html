@@ -1,25 +1,26 @@
 <template>
-    <lightning-card title="Record Form Account Details">
+    <lightning-card title="Find Related Accounts">
             <lightning-layout>
                 <!-- Search Bar Markup -->
                 <lightning-layout-item>
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="text-input-id-1">Search Sibling Accounts</label>
                         <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
-                              <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                              <!-- <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
                                     <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-                            </svg>
-                            <input type="text" name="FirstName" onchange={handleFormInputChange} 
+                            </svg> -->
+                            <input type="text" name="SearchTerm" onchange={handleFormInputChange} 
                                                                 placeholder="Enter Account Id or Name" 
                                                                 class="slds-input" 
                                                                 id="text-input-id-1"/>
                         </div>
                     </div>
 
-                    <button class="slds-button slds-button_neutral" onclick={handleGetSiblingAccounts}>Search</button>
+                    <button class="slds-button slds-button_neutral" onclick={handleLoadSiblingAccounts}>Search</button>
                 </lightning-layout-item>
             </lightning-layout>
 
+            <h1>{searchString}</h1>
 
             <!-- Data Table -->
             <div class="slds-m-around_medium">
@@ -30,9 +31,9 @@
                         columns={columns}>
                     </lightning-datatable>
                 </template>
-                <template if:true={contacts.error}>
-                    <!-- handle Apex error -->
-                </template>
+                <!-- <template if:true={}>
+                    handle Apex error 
+                </template> -->
             </div>
 
 

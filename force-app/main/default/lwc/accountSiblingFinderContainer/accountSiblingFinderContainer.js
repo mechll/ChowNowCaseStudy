@@ -1,5 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
 
+import getContacts from '@salesforce/apex/AccountSiblingFinderController.getAccountsWithPrimaryContacts';
+
 import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
 import CONTACT_NAME_FIELD from '@salesforce/schema/Contact.Name';
 import CONTACT_EMAIL_FIELD from '@salesforce/schema/Contact.Email';
@@ -39,11 +41,26 @@ const COLS = [
 ];
 
 export default class AccountSiblingFinderContainer extends LightningElement {
-
     @track data;
+    @track error;
+
+    searchString;
     columns = COLS
 
-    handleFormInputChange(event) {}
+    handleFormInputChange(event) {
+        console.log(event.target.value);
+        this.searchString = event.target.value;
+    }
 
-    handleGetSiblingAccounts(event) {}
+    handleLoadSiblingAccounts() {
+        console.log('InsidehandleLoadSiblingAccounts ');
+        getContacts({ searchString: this.searchString})
+            .then(result => {
+                this.data = result;
+            })
+            .catch(error => {
+                console.log('ERROR: ', error);
+                this.error = error;
+            });
+    }
 }
