@@ -24,4 +24,12 @@ public with sharing class AccountSiblingFinderController {
 
         return primaryContacts;
     }
+
+   @AuraEnabled
+   public static void saveRecords(List<Contact> contactsToUpdate){
+        for(Contact cont : contactsToUpdate) {
+            cont.Status__c = 'Contacted';
+        }
+      update contactsToUpdate; 
+   }
 }

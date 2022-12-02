@@ -1,6 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
 
 import getContacts from '@salesforce/apex/AccountSiblingFinderController.getAccountsWithPrimaryContacts';
+import saveRecords from '@salesforce/apex/AccountSiblingFinderController.saveRecords';
 
 import ACCOUNT_NAME_FIELD from '@salesforce/schema/Account.Name';
 import CONTACT_NAME_FIELD from '@salesforce/schema/Contact.Name';
@@ -22,7 +23,7 @@ const COLS = [
     { 
         label: 'Email', 
         fieldName: CONTACT_EMAIL_FIELD.fieldApiName, 
-        editable: true },
+    },
     {
         label: 'Mobile',
         fieldName: CONTACT_PHONE_FIELD.fieldApiName,
@@ -46,9 +47,11 @@ export default class AccountSiblingFinderContainer extends LightningElement {
 
     searchString;
     columns = COLS
+    showRecords = false;
 
     handleFormInputChange(event) {
         console.log(event.target.value);
+        this.data = undefined;
         this.searchString = event.target.value;
     }
 
@@ -62,5 +65,21 @@ export default class AccountSiblingFinderContainer extends LightningElement {
                 console.log('ERROR: ', error);
                 this.error = error;
             });
+    }
+
+    handleUpdateContactStatus() {
+        const records = this.template.querySelector('lightning-datatable').getSelectedRows();
+            // .map( contact => contact.Status__c = "Contacted");
+
+        console.log('HandleUpdate: records: ', records);
+        saveRecords({ contactsToUpdate: records })
+         .then((result) => {
+            // success toast
+             console.log(result);
+         })
+         .catch((error) => {
+            // failure toast
+             console.log(error);
+         });
     }
 }
