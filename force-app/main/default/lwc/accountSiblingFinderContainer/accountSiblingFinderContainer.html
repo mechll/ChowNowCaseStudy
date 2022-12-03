@@ -1,45 +1,65 @@
 <template>
-    <lightning-card title="Find Related Accounts">
-            <lightning-layout>
-                <!-- Search Bar Markup -->
-                <lightning-layout-item>
-                    <div class="slds-m-around_medium">
-                        <div class="slds-form-element">
-                            <label class="slds-form-element__label" for="text-input-id-1">Search Sibling Accounts</label>
-                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
-                                  <!-- <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
-                                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-                                </svg> -->
-                                <input type="text" name="SearchTerm" onchange={handleFormInputChange} 
-                                                                    placeholder="Enter Account Id or Name" 
-                                                                    class="slds-input" 
-                                                                    id="text-input-id-1"/>
-                            </div>
+    <lightning-card title="Locate Sibling Accounts">
+            <div class="">
+                <div class="slds-var-m-around_medium">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="text-input-id-1">Search Sibling Accounts</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                              <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                                    <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#search"></use>
+                            </svg>
+                            <input type="text" name="SearchTerm" onchange={handleFormInputChange}
+                                                                 placeholder="Enter Account Id or Name" 
+                                                                 class="slds-input" 
+                                                                 id="text-input-id-1"/>
                         </div>
-                        <div class="slds-m-around_medium">
-                            <button class="slds-button slds-button_neutral" onclick={handleLoadSiblingAccounts}>Search</button>
-                        </div>
-                        
                     </div>
-                </lightning-layout-item>
-            </lightning-layout>
-
-            <h1>{searchString}</h1>
-
-                <!-- Data Table -->
-                <div class="slds-m-around_medium">
-                    <template if:true={data}>
-                        <lightning-datatable
-                            key-field="Id"
-                            data={data}
-                            columns={columns}>
-                        </lightning-datatable>
-                    </template>
-                    <!-- <template if:true={}>
-                        handle Apex error 
-                    </template> -->
                 </div>
-                <button class="slds-button slds-button_neutral slds-m-around_medium" onclick={handleUpdateContactStatus}>Update to 'Contacted'</button>
+                <div class="slds-var-m-around_medium slds-var-p-bottom_large">
+                    <button class="slds-button slds-button_neutral" onclick={handleSubmitSearch}>Search</button>
+                </div>
+              </div>
 
+            <!-- Data Table -->
+            <template if:false={isLoading}>
+                <div class="slds-var-m-around_medium">
+                    <template if:true={showRecords}>
+                         <template if:true={data}>
+                            <div class="slds-var-m-around_medium">
+                                <lightning-datatable
+                                    key-field="Id"
+                                    data={data}
+                                    columns={columns}
+                                    onrowselection= {handleSelectedRow}>
+                                </lightning-datatable>
+                            </div>
+                            <div class="slds-var-m-around_medium">
+                                <div class="slds-align_absolute-center">
+                                    <div class="slds-text-body_regular selected-item-menu">Select a Priary Contact to update its status to 'Contacted'</div>
+                                </div>
+                                <div class="slds-align_absolute-center">
+                                    <template if:true={showChangeStatusButton}>
+                                        <button class="slds-button slds-button_neutral slds-var-m-around_medium selected-item-menu" onclick={handleUpdateContactStatus}>Update</button>    
+                                    </template>
+                                </div>
+                            </div>
+                         </template>
+                    </template>
+                    <div class="slds-align_absolute-center">
+                        <template if:false={resultsFound}>
+                            <h1>No Records Found, check your Account Name or Id</h1>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- spinner -->
+            <div class="slds-align_absolute-center">
+                <template if:true={isLoading}>
+                    <div class="loadingSpinner">
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </div>
+                </template>
+            </div>
     </lightning-card>
 </template>
